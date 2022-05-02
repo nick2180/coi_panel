@@ -31,6 +31,10 @@ class _MainViewState extends State<AddSubView> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
+        appBar: AppBar(
+          backgroundColor: textColor,
+          actions: [],
+        ),
         body: SingleChildScrollView(
           padding: const EdgeInsets.all(
             30,
