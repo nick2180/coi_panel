@@ -1,5 +1,6 @@
 // ignore_for_file: file_names
 
+import 'package:coi_panel/AddCOI.dart';
 import 'package:coi_panel/AddSubs.dart';
 import 'package:flutter/material.dart';
 
@@ -26,6 +27,26 @@ class _HomeViewState extends State<HomeView> {
               children: [
                 const SizedBox(
                   height: 300,
+                ),
+                MaterialButton(
+                  padding: const EdgeInsets.all(
+                    30,
+                  ),
+                  color: textColor,
+                  onPressed: () {
+                    Navigator.of(context).push(AddCOI());
+                  },
+                  child: Text(
+                    'Add COI',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: textSize,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+                const SizedBox(
+                  height: 50,
                 ),
                 MaterialButton(
                   padding: const EdgeInsets.all(
@@ -67,6 +88,22 @@ class _HomeViewState extends State<HomeView> {
           ),
         ),
       ),
+    );
+  }
+
+  Route AddCOI() {
+    return PageRouteBuilder(
+      pageBuilder: (BuildContext context,
+          Animation<double> animation, //
+          Animation<double> secondaryAnimation) {
+        return const AddCOIView();
+      },
+      transitionsBuilder: (BuildContext context,
+          Animation<double> animation, //
+          Animation<double> secondaryAnimation,
+          Widget child) {
+        return child;
+      },
     );
   }
 
