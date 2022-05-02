@@ -84,6 +84,7 @@ class _AddCOIViewState extends State<AddCOIView> {
                       coi: COIController.text,
                       followers: rng.nextInt(1000000),
                       isReviewed: true,
+                      subs: 0,
                     );
 
                     AddNewCOI(coi);
