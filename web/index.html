@@ -37,8 +37,8 @@
        application. For more information, see:
        https://developers.google.com/web/fundamentals/primers/service-workers -->
 
-       <script src="https://www.gstatic.com/firebase.js/8.6.1/firebase.app.js"></script><sc/script/>
-       <script src="https://www.gstatic.com/firebase.js/8.6.1/firebase-firestore.js"></script><sc/script/>
+       <!--  <script src="https://www.gstatic.com/firebase.js/8.6.1/firebase.app.js"></script><sc/script/>
+       <script src="https://www.gstatic.com/firebase.js/8.6.1/firebase-firestore.js"></script><sc/script/> -->
 
   <script>
    
@@ -105,5 +105,29 @@
       loadMainDartJs();
     }
   </script>
+
+<script type="module">
+  // Import the functions you need from the SDKs you need
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/9.7.0/firebase-app.js";
+  import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.7.0/firebase-analytics.js";
+  // TODO: Add SDKs for Firebase products that you want to use
+  // https://firebase.google.com/docs/web/setup#available-libraries
+
+  // Your web app's Firebase configuration
+  // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+  const firebaseConfig = {
+    apiKey: "AIzaSyD_aVeZDwg6toU9K6DdO9dLLvMiDgUHbZw",
+    authDomain: "connecetmyhobbies.firebaseapp.com",
+    projectId: "connecetmyhobbies",
+    storageBucket: "connecetmyhobbies.appspot.com",
+    messagingSenderId: "359478760391",
+    appId: "1:359478760391:web:a6cd4be02a184d1d5bbfe2",
+    measurementId: "G-NTPW7JL70N"
+  };
+
+  // Initialize Firebase
+  const app = initializeApp(firebaseConfig);
+  const analytics = getAnalytics(app);
+</script>
 </body>
 </html>
