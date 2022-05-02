@@ -1,7 +1,6 @@
 // ignore_for_file: file_names
 
-import 'package:coi_panel/AddCOI.dart';
-import 'package:coi_panel/AddSubs.dart';
+import 'package:coi_panel/AddItems.dart';
 import 'package:flutter/material.dart';
 
 class HomeView extends StatefulWidget {
@@ -34,7 +33,7 @@ class _HomeViewState extends State<HomeView> {
                   ),
                   color: textColor,
                   onPressed: () {
-                    Navigator.of(context).push(AddCOI());
+                    Navigator.of(context).push(AddSubs());
                   },
                   child: Text(
                     'Add COI',
@@ -96,7 +95,7 @@ class _HomeViewState extends State<HomeView> {
       pageBuilder: (BuildContext context,
           Animation<double> animation, //
           Animation<double> secondaryAnimation) {
-        return const AddCOIView();
+        return const AddSubView();
       },
       transitionsBuilder: (BuildContext context,
           Animation<double> animation, //
