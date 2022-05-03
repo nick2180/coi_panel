@@ -1,5 +1,7 @@
 // ignore_for_file: file_names, non_constant_identifier_names
 
+import 'dart:async';
+
 import 'package:clipboard/clipboard.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:coi_panel/Classes/COI.dart';
@@ -128,11 +130,55 @@ class _MainViewState extends State<AddSubView> {
                             itemController.text = value.toString();
                           },
                         );
+                        Timer(Duration(milliseconds: 500), () {
+                          Future AddNewItem(Item sub) async {
+                            final docUser = FirebaseFirestore.instance
+                                .collection(
+                                  'COIs',
+                                )
+                                .doc(coi.coi)
+                                .collection('subs')
+                                .doc(sub.item);
+
+                            final json = sub.toJson();
+
+                            await docUser.set(json);
+                          }
+
+                          final item = Item(
+                            item: itemController.text,
+                            followers: 0,
+                            isReviewed: true,
+                          );
+
+                          AddNewItem(item);
+
+                          Future IncreaseItems(COI coi) async {
+                            final docUser = FirebaseFirestore.instance
+                                .collection(
+                                  'COIs',
+                                )
+                                .doc(coi.coi);
+
+                            final json = coi.toJson();
+
+                            await docUser.set(json);
+                          }
+
+                          final increaseItemNumber = COI(
+                              subs: coi.subs + 1,
+                              coi: coi.coi,
+                              followers: coi.followers,
+                              isReviewed: true);
+                          IncreaseItems(increaseItemNumber);
+
+                          itemController.clear();
+                        });
                       });
                     });
                   },
                   child: Text(
-                    'Paste',
+                    'Paste & Send',
                     style: TextStyle(
                       color: secondColor,
                       fontSize: textSize,
@@ -155,64 +201,6 @@ class _MainViewState extends State<AddSubView> {
                       controller: itemController,
                     ),
                     width: 150,
-                  ),
-                  Container(
-                    child: MaterialButton(
-                      onPressed: () {
-                        Future AddNewItem(Item sub) async {
-                          final docUser = FirebaseFirestore.instance
-                              .collection(
-                                'COIs',
-                              )
-                              .doc(coi.coi)
-                              .collection('subs')
-                              .doc(sub.item);
-
-                          final json = sub.toJson();
-
-                          await docUser.set(json);
-                        }
-
-                        final item = Item(
-                          item: itemController.text,
-                          followers: 0,
-                          isReviewed: true,
-                        );
-
-                        AddNewItem(item);
-
-                        Future IncreaseItems(COI coi) async {
-                          final docUser = FirebaseFirestore.instance
-                              .collection(
-                                'COIs',
-                              )
-                              .doc(coi.coi);
-
-                          final json = coi.toJson();
-
-                          await docUser.set(json);
-                        }
-
-                        final increaseItemNumber = COI(
-                            subs: coi.subs + 1,
-                            coi: coi.coi,
-                            followers: coi.followers,
-                            isReviewed: true);
-                        IncreaseItems(increaseItemNumber);
-
-                        itemController.clear();
-                      },
-                      color: mainColor,
-                      child: Text(
-                        'OK',
-                        style: TextStyle(
-                          color: secondColor,
-                          fontSize: textSize,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
-                    width: 60,
                   ),
                 ],
               ),
@@ -293,4 +281,6 @@ class _MainViewState extends State<AddSubView> {
         (snapshots) =>
             snapshots.docs.map((doc) => COI.fromJson(doc.data())).toList(),
       );
+
+  AddItemToFB(COI coi) {}
 }
