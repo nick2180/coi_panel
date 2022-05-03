@@ -1,6 +1,7 @@
 // ignore_for_file: file_names
 
 import 'package:coi_panel/Views/AddItems.dart';
+import 'package:coi_panel/Views/ManageCOI.dart';
 import 'package:flutter/material.dart';
 
 class HomeView extends StatefulWidget {
@@ -72,9 +73,11 @@ class _HomeViewState extends State<HomeView> {
                     30,
                   ),
                   color: textColor,
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.of(context).push(ManageCOIs());
+                  },
                   child: Text(
-                    'Manage COI',
+                    'Manage COIs',
                     style: TextStyle(
                       color: Colors.white,
                       fontSize: textSize,
@@ -112,6 +115,22 @@ class _HomeViewState extends State<HomeView> {
           Animation<double> animation, //
           Animation<double> secondaryAnimation) {
         return const AddSubView();
+      },
+      transitionsBuilder: (BuildContext context,
+          Animation<double> animation, //
+          Animation<double> secondaryAnimation,
+          Widget child) {
+        return child;
+      },
+    );
+  }
+
+  Route ManageCOIs() {
+    return PageRouteBuilder(
+      pageBuilder: (BuildContext context,
+          Animation<double> animation, //
+          Animation<double> secondaryAnimation) {
+        return const ManageCOIView();
       },
       transitionsBuilder: (BuildContext context,
           Animation<double> animation, //
