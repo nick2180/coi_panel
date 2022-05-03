@@ -6,9 +6,7 @@ import 'package:clipboard/clipboard.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:coi_panel/Classes/COI.dart';
 import 'package:coi_panel/Classes/Items.dart';
-import 'package:coi_panel/main.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -28,9 +26,6 @@ class _MainViewState extends State<AddSubView> {
   double bottomText = 10;
   double iconSize = 15;
   double space = 20;
-  int activeCOI = 0;
-
-  bool paste = false;
 
   String copiedText = '';
 
@@ -39,9 +34,8 @@ class _MainViewState extends State<AddSubView> {
     'deux',
   ];
 
-  String dropdownValue = 'Select COI';
   ClipboardData data = ClipboardData(text: '<Text to copy goes here>');
-  final subController = TextEditingController();
+
   final itemController = TextEditingController();
 
   @override
