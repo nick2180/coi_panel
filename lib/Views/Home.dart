@@ -1,6 +1,6 @@
 // ignore_for_file: file_names
 
-import 'package:coi_panel/AddItems.dart';
+import 'package:coi_panel/Views/AddItems.dart';
 import 'package:flutter/material.dart';
 
 class HomeView extends StatefulWidget {
