@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:coi_panel/Home.dart';
+import 'package:coi_panel/Views/Home.dart';
 import 'package:flutter/material.dart';
 
 import 'package:firebase_core/firebase_core.dart';
