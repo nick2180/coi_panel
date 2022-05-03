@@ -1,11 +1,14 @@
 // ignore_for_file: file_names, non_constant_identifier_names
 
+import 'package:clipboard/clipboard.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:coi_panel/Classes/COI.dart';
 import 'package:coi_panel/Classes/Items.dart';
+import 'package:coi_panel/main.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class AddSubView extends StatefulWidget {
   const AddSubView({Key? key}) : super(key: key);
@@ -22,17 +25,20 @@ class _MainViewState extends State<AddSubView> {
   double textSize = 20;
   double bottomText = 10;
   double iconSize = 15;
-
+  double space = 20;
   int activeCOI = 0;
 
-  double space = 20;
+  bool paste = false;
+
+  String copiedText = '';
+
   List<String> db = [
     'un',
     'deux',
   ];
 
   String dropdownValue = 'Select COI';
-
+  ClipboardData data = ClipboardData(text: '<Text to copy goes here>');
   final subController = TextEditingController();
   final itemController = TextEditingController();
 
@@ -53,6 +59,7 @@ class _MainViewState extends State<AddSubView> {
               children: [
                 Text(
                   'Add sub to COI',
+                  textAlign: TextAlign.center,
                   style: TextStyle(
                     color: mainColor,
                     fontSize: titleSize,
@@ -60,7 +67,7 @@ class _MainViewState extends State<AddSubView> {
                   ),
                 ),
                 const SizedBox(
-                  height: 150,
+                  height: 20,
                 ),
                 Container(
                   height: 800,
@@ -73,10 +80,10 @@ class _MainViewState extends State<AddSubView> {
                         final coi = snapshot.data!;
 
                         return GridView.count(
-                            childAspectRatio: 2,
+                            childAspectRatio: 1.5,
                             mainAxisSpacing: space,
                             crossAxisSpacing: space,
-                            crossAxisCount: 5,
+                            crossAxisCount: 2,
                             children: coi.map(showCOI).toList());
                       } else {
                         return const Center(
@@ -101,13 +108,39 @@ class _MainViewState extends State<AddSubView> {
         barrierDismissible: true,
         builder: (BuildContext context) {
           return AlertDialog(
-            title: Text(
-              'Add an item to ' + coi.coi,
-              style: TextStyle(
-                color: mainColor,
-                fontSize: textSize,
-                fontWeight: FontWeight.bold,
-              ),
+            title: Column(
+              children: [
+                Text(
+                  'Add an item to ' + coi.coi,
+                  style: TextStyle(
+                    color: mainColor,
+                    fontSize: textSize,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                MaterialButton(
+                  color: mainColor,
+                  onPressed: () {
+                    setState(() {
+                      FlutterClipboard.paste().then((value) {
+                        setState(
+                          () {
+                            itemController.text = value.toString();
+                          },
+                        );
+                      });
+                    });
+                  },
+                  child: Text(
+                    'Paste',
+                    style: TextStyle(
+                      color: secondColor,
+                      fontSize: textSize,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                )
+              ],
             ),
             content: SingleChildScrollView(
               child: Row(
@@ -118,6 +151,7 @@ class _MainViewState extends State<AddSubView> {
                   ),
                   Container(
                     child: TextFormField(
+                      textCapitalization: TextCapitalization.words,
                       controller: itemController,
                     ),
                     width: 150,
@@ -125,7 +159,7 @@ class _MainViewState extends State<AddSubView> {
                   Container(
                     child: MaterialButton(
                       onPressed: () {
-                        Future AddNewCOI(Item sub) async {
+                        Future AddNewItem(Item sub) async {
                           final docUser = FirebaseFirestore.instance
                               .collection(
                                 'COIs',
@@ -145,7 +179,26 @@ class _MainViewState extends State<AddSubView> {
                           isReviewed: true,
                         );
 
-                        AddNewCOI(item);
+                        AddNewItem(item);
+
+                        Future IncreaseItems(COI coi) async {
+                          final docUser = FirebaseFirestore.instance
+                              .collection(
+                                'COIs',
+                              )
+                              .doc(coi.coi);
+
+                          final json = coi.toJson();
+
+                          await docUser.set(json);
+                        }
+
+                        final increaseItemNumber = COI(
+                            subs: coi.subs + 1,
+                            coi: coi.coi,
+                            followers: coi.followers,
+                            isReviewed: true);
+                        IncreaseItems(increaseItemNumber);
 
                         itemController.clear();
                       },
@@ -159,7 +212,7 @@ class _MainViewState extends State<AddSubView> {
                         ),
                       ),
                     ),
-                    width: 50,
+                    width: 60,
                   ),
                 ],
               ),
