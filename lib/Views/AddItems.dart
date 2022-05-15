@@ -147,24 +147,10 @@ class _MainViewState extends State<AddSubView> {
 
                           AddNewItem(item);
 
-                          Future IncreaseItems(COI coi) async {
-                            final docUser = FirebaseFirestore.instance
-                                .collection(
-                                  'COIs',
-                                )
-                                .doc(coi.coi);
-
-                            final json = coi.toJson();
-
-                            await docUser.set(json);
-                          }
-
-                          final increaseItemNumber = COI(
-                              subs: coi.subs + 1,
-                              coi: coi.coi,
-                              followers: coi.followers,
-                              isReviewed: true);
-                          IncreaseItems(increaseItemNumber);
+                          FirebaseFirestore.instance
+                              .collection("COIs")
+                              .doc(coi.coi)
+                              .update({"subs": coi.subs + 1}).then((_) {});
 
                           itemController.clear();
                         });
